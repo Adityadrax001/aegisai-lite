@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:17
+    container_name: aegisai-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: aegisai
+      POSTGRES_USER: aegis
+      POSTGRES_PASSWORD: aegis_local_dev_only
+    ports:
+      - "5432:5432"
+    volumes:
+      - aegisai_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aegis -d aegisai"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  aegisai_pgdata:
